@@ -156,3 +156,43 @@ using namespace std;
 //inline - функциями - членами, используйте инициализаторы, реализуйте деструктор.
 //Обязательно необходимо выделять динамически память под ФИО. Предоставьте пользователю возможность добавлять новых абонентов, удалять абонентов,
 //искать абонентов по ФИО, показывать всех абонентов, сохранять информацию в файл и загружать из файла.
+
+class Abonent
+{
+	string fio;
+	int homePhone;
+	int workPhone;
+	int mobilPhone;
+	string additionally;
+
+public:
+
+	Abonent() : Abonent(0, 0, 0, 0, 0)
+	{
+
+	}
+
+	Abonent(string fio, int homePhone, int workPhone, int mobilPhone, string additionally)
+	{
+		Abonent::fio = fio;
+		Abonent::homePhone = homePhone;
+		Abonent::workPhone = workPhone;
+		Abonent::mobilPhone = mobilPhone;
+		Abonent::additionally = additionally;
+	}
+
+	void SetFio(string fio) { Abonent::fio = fio; }
+	string GetFio() { return fio; }
+
+	void SetHomePhone(int homePhone) { Abonent::homePhone = homePhone; }
+	int GetHomePhone() { return homePhone; }
+
+	void SetWorkPhone(int workPhone) { Abonent::workPhone = workPhone; }
+	int GetWorkPhone() { return workPhone; }
+
+	void SetMobilPhone(int mobilPhone) { Abonent::mobilPhone = mobilPhone; }
+	int GetMobilPhone() { return mobilPhone; }
+
+	void SetAdditionally(string additionally) { Abonent::additionally = additionally; }
+	string GetAdditionally() { return additionally; }
+};
