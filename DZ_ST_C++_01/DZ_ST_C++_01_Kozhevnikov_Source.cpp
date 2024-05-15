@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <Windows.h>
 using namespace std;
 
 //Задание №1. Реализуйте класс Дробь.Необходимо хранить числитель и знаменатель в качестве переменных - членов. Реализуйте функции - члены для ввода данных
@@ -159,40 +161,101 @@ using namespace std;
 
 class Abonent
 {
-	string fio;
+	const char* fio;
 	int homePhone;
 	int workPhone;
 	int mobilPhone;
-	string additionally;
+	const char* additionally;
 
 public:
 
-	Abonent() : Abonent(0, 0, 0, 0, 0)
+	Abonent(char* fio, int homePhone, int workPhone, int mobilPhone, char* additionally)
 	{
-
+		this->fio = fio;
+		this->homePhone = homePhone;
+		this->workPhone = workPhone;
+		this->mobilPhone = mobilPhone;
+		this->additionally = additionally;
 	}
 
-	Abonent(string fio, int homePhone, int workPhone, int mobilPhone, string additionally)
+	Abonent() : Abonent ("0", 0, 0, 0, "0")
 	{
-		Abonent::fio = fio;
-		Abonent::homePhone = homePhone;
-		Abonent::workPhone = workPhone;
-		Abonent::mobilPhone = mobilPhone;
-		Abonent::additionally = additionally;
 	}
 
-	void SetFio(string fio) { Abonent::fio = fio; }
-	string GetFio() { return fio; }
+	//Abonent(char* fio, int homePhone, int workPhone, int mobilPhone) : Abonent(fio, homePhone, workPhone, mobilPhone, '\0')
+	//{
+	//}
 
-	void SetHomePhone(int homePhone) { Abonent::homePhone = homePhone; }
+	//Abonent(char* fio, int homePhone, int workPhone) : Abonent (fio, homePhone, workPhone, 0, '\0')
+	//{
+	//}
+
+	//Abonent(char* fio, int homePhone) : Abonent(fio, homePhone, 0, 0, '\0')
+	//{
+	//}
+
+
+
+	void SetFio(const char* fio) { this->fio = fio; }
+	const char* GetFio() { return fio; }
+
+	void SetHomePhone(int homePhone) { this->homePhone = homePhone; }
 	int GetHomePhone() { return homePhone; }
 
-	void SetWorkPhone(int workPhone) { Abonent::workPhone = workPhone; }
+	void SetWorkPhone(int workPhone) { this->workPhone = workPhone; }
 	int GetWorkPhone() { return workPhone; }
 
-	void SetMobilPhone(int mobilPhone) { Abonent::mobilPhone = mobilPhone; }
+	void SetMobilPhone(int mobilPhone) { this->mobilPhone = mobilPhone; }
 	int GetMobilPhone() { return mobilPhone; }
 
-	void SetAdditionally(string additionally) { Abonent::additionally = additionally; }
-	string GetAdditionally() { return additionally; }
+	void SetAdditionally(const char* additionally) { this->additionally = additionally; }
+	const char* GetAdditionally() { return additionally; }
+
+	~Abonent()
+	{
+		delete[] fio;
+	}
 };
+
+class DatabaseAbonent
+{
+	vector <Abonent> databaseAbonent;
+
+public:
+	void AbonentBase(vector<Abonent>& databaseAbonent)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Abonent abonent;
+			abonent.SetFio("Абонент Абонент Абонент");
+			abonent.SetHomePhone(i);
+			abonent.SetWorkPhone(i);
+			abonent.SetMobilPhone(i);
+			abonent.SetAdditionally("Отсутствует");
+			databaseAbonent.push_back(abonent);
+		}
+	}
+	void ShowAbonentBase()
+	{
+		for (int i = 0; i < databaseAbonent.size(); i++)
+		{
+			cout << databaseAbonent.at(i).GetFio() << endl;
+			cout << databaseAbonent.at(i).GetHomePhone() << endl;
+			cout << databaseAbonent.at(i).GetWorkPhone() << endl;
+			cout << databaseAbonent.at(i).GetMobilPhone() << endl;
+			cout << databaseAbonent.at(i).GetAdditionally() << endl;
+		}
+	}
+};
+
+void main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	DatabaseAbonent StartDatabase;
+
+	StartDatabase.ShowAbonentBase();
+
+	system("pause");
+}
