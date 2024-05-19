@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <Windows.h>
+#include <stdio.h>
+#include <span>
 using namespace std;
 
 //Задание №1. Реализуйте класс Дробь.Необходимо хранить числитель и знаменатель в качестве переменных - членов. Реализуйте функции - члены для ввода данных
@@ -161,90 +163,229 @@ using namespace std;
 
 class Abonent
 {
-	const char* fio;
-	int homePhone;
-	int workPhone;
-	int mobilPhone;
-	const char* additionally;
-
+	char* fio;
+	double homePhone;
+	double workPhone;
+	double mobilPhone;
+	char* additionally;
+	
 public:
 
-	Abonent(char* fio, int homePhone, int workPhone, int mobilPhone, char* additionally)
+	Abonent( char* fio, double homePhone, double workPhone, double mobilPhone, char* additionally)
 	{
 		this->fio = fio;
+		this->additionally = additionally;
 		this->homePhone = homePhone;
 		this->workPhone = workPhone;
 		this->mobilPhone = mobilPhone;
-		this->additionally = additionally;
 	}
 
-	Abonent() : Abonent ("0", 0, 0, 0, "0")
+	Abonent() : Abonent(nullptr, 0, 0, 0, nullptr) {}
+
+	Abonent(char* fio, double homePhone, double workPhone, double mobilPhone) : Abonent(fio, homePhone, workPhone, mobilPhone, nullptr)	{}
+
+	Abonent(char* fio, double homePhone, double workPhone) : Abonent (fio, homePhone, workPhone, 0, nullptr)	{}
+
+	Abonent(char* fio, double homePhone) : Abonent(fio, homePhone, 0, 0, nullptr)	{}
+
+	explicit Abonent(char* fio) : Abonent(fio, 0, 0, 0, nullptr) {}
+	
+	//Abonent(const Abonent& other)
+	//{
+	//	int size = strlen(other.fio);
+	//	char* fio = new char[size];
+	//	for(int i: span(other.fio,other.fio+size))
+	//		fio[i] = other.fio[i];
+	//	this->fio = fio;
+
+	//	homePhone = other.homePhone;
+	//	workPhone = other.workPhone;
+	//	mobilPhone = other.mobilPhone;
+
+	//	int sizeAd = strlen(other.additionally);
+	//	char* additionally = new char[sizeAd];
+	//	for (int i : span(other.additionally, other.additionally + sizeAd))
+	//		additionally[i] = other.additionally[i];
+	//	this->additionally = additionally;
+	//}
+
+	void SetFio (char* fio)
 	{
+		//int sizeAd = 68;
+		//char* fio = new char[size];
+		//cout << "Введите ФИО" << endl;
+		//cin.ignore();
+		//gets_s(fio, size);
+		//this->fio = fio;
+
+		int size = strlen(fio);
+		char* buffer = new char[size+1];
+		for (int i = 0; i <= size; i++)
+			buffer[i] = fio[i];
+		this->fio = buffer;
+		buffer = nullptr;
+
+		//this->fio = fio;
 	}
-
-	//Abonent(char* fio, int homePhone, int workPhone, int mobilPhone) : Abonent(fio, homePhone, workPhone, mobilPhone, '\0')
-	//{
-	//}
-
-	//Abonent(char* fio, int homePhone, int workPhone) : Abonent (fio, homePhone, workPhone, 0, '\0')
-	//{
-	//}
-
-	//Abonent(char* fio, int homePhone) : Abonent(fio, homePhone, 0, 0, '\0')
-	//{
-	//}
-
-
-
-	void SetFio(const char* fio) { this->fio = fio; }
 	const char* GetFio() { return fio; }
 
-	void SetHomePhone(int homePhone) { this->homePhone = homePhone; }
-	int GetHomePhone() { return homePhone; }
+	void SetHomePhone(double homePhone)
+	{
+		//cout << "Введите домашний номер" << endl;
+		//cin >> homePhone;
+		this->homePhone = homePhone;
+	}
+	double GetHomePhone() { return homePhone; }
 
-	void SetWorkPhone(int workPhone) { this->workPhone = workPhone; }
-	int GetWorkPhone() { return workPhone; }
+	void SetWorkPhone(double workPhone)
+	{
+		//cout << "Введите рабочий номер" << endl;
+		//cin >> workPhone;
+		this->workPhone = workPhone;
+	}
+	double GetWorkPhone() { return workPhone; }
 
-	void SetMobilPhone(int mobilPhone) { this->mobilPhone = mobilPhone; }
-	int GetMobilPhone() { return mobilPhone; }
+	void SetMobilPhone(double mobilPhone)
+	{
+		//cout << "Введите мобильный номер" << endl;
+		//cin >> mobilPhone;
+		this->mobilPhone = mobilPhone;
+	}
+	double GetMobilPhone() { return mobilPhone; }
 
-	void SetAdditionally(const char* additionally) { this->additionally = additionally; }
+	void SetAdditionally(char* additionally)
+	{
+		//int sizeAd = 68;
+		//char* additionally = new char[sizeAd];
+		//cout << "Введите доп. информацию" << endl;
+		//cin.ignore();
+		//gets_s(additionally, sizeAd);
+		//this->additionally = additionally;
+
+		int size = strlen(additionally);
+		char* buffer = new char[size+1];
+		for (int i = 0; i <= size; i++)
+			buffer[i] = additionally[i];
+		this->additionally = buffer;
+		buffer = additionally;
+
+		//this->additionally = additionally;
+	}
 	const char* GetAdditionally() { return additionally; }
 
-	~Abonent()
-	{
-		delete[] fio;
-	}
+	//~Abonent()
+	//{
+	//	delete[] fio;
+	//	delete[] additionally;
+	//}
 };
 
-class DatabaseAbonent
+class AbonentBase
 {
-	vector <Abonent> databaseAbonent;
+	vector <Abonent> abonentBase;
 
 public:
-	void AbonentBase(vector<Abonent>& databaseAbonent)
+	
+	AbonentBase()
+	{ 
+		Abonent abonent;
+		abonentBase.push_back(abonent);
+	}
+	
+	int Size()
 	{
-		for (int i = 0; i < 3; i++)
+		return abonentBase.size();
+	}
+
+	void FillAbonentBase()
+	{
+		if (abonentBase.front().GetFio() == nullptr)
+			abonentBase.pop_back();
+
+		Abonent abonent;
+		int size = 68;
+		char* fio = new char[size];
+		cout << "Введите ФИО абонента" << endl;
+		cin.ignore();
+		abonent.SetFio(gets_s(fio, size));
+
+		cout << "Введите домашний номер" << endl;
+		double homePhone;
+		cin >> homePhone;
+		abonent.SetHomePhone(homePhone);
+
+		cout << "Введите рабочий номер" << endl;
+		double workPhone;
+		cin >> workPhone;
+		abonent.SetWorkPhone(workPhone);
+
+		cout << "Введите мобильный номер" << endl;
+		double mobilPhone;
+		cin >> mobilPhone;
+		abonent.SetMobilPhone(mobilPhone);
+
+		char* additionally = new char[size];
+		cout << "Введите доп. информацию" << endl;
+		cin.ignore();
+		abonent.SetAdditionally(gets_s(additionally, size));
+
+		abonentBase.push_back(abonent);
+
+		delete[]fio;
+		delete[]additionally;
+	}
+	
+	void ShowAbonentBase(int i)
+	{
+		if (abonentBase.front().GetFio() == nullptr)
 		{
-			Abonent abonent;
-			abonent.SetFio("Абонент Абонент Абонент");
-			abonent.SetHomePhone(i);
-			abonent.SetWorkPhone(i);
-			abonent.SetMobilPhone(i);
-			abonent.SetAdditionally("Отсутствует");
-			databaseAbonent.push_back(abonent);
+			cout << "Нет записей!" << endl;
+			return;
+		}
+		else
+		{
+			cout << "Абонент " << i + 1 << endl;
+			cout << "ФИО: " << abonentBase.at(i).GetFio() << endl;
+			cout << "Домашний номер: " << abonentBase.at(i).GetHomePhone() << endl;
+			cout << "Рабочий номер: " << abonentBase.at(i).GetWorkPhone() << endl;
+			cout << "Мобильный номер: " << abonentBase.at(i).GetMobilPhone() << endl;
+			cout << "Доп. информация: " << abonentBase.at(i).GetAdditionally() << endl << endl;
 		}
 	}
-	void ShowAbonentBase()
+	void FindAbonent(const char* fio)
 	{
-		for (int i = 0; i < databaseAbonent.size(); i++)
+		if (abonentBase.front().GetFio() == nullptr)
 		{
-			cout << databaseAbonent.at(i).GetFio() << endl;
-			cout << databaseAbonent.at(i).GetHomePhone() << endl;
-			cout << databaseAbonent.at(i).GetWorkPhone() << endl;
-			cout << databaseAbonent.at(i).GetMobilPhone() << endl;
-			cout << databaseAbonent.at(i).GetAdditionally() << endl;
+			cout << "Нет записей!" << endl;
+			return;
 		}
+
+		for (int i = 0; i < abonentBase.size(); i++)
+			if (strcmp(abonentBase.at(i).GetFio(), fio) == 0)
+			{
+				ShowAbonentBase(i);
+				return;
+			}
+
+		cout << "Совпадений нет!" << endl;
+		return;
+
+	}
+	void DeleteAbonent(int abonentNumber)
+	{
+		if (abonentBase.size() < abonentNumber)
+		{
+			cout << "Неверный номер абонента" << endl;
+			return;
+		}
+		abonentBase.erase(abonentBase.begin() + abonentNumber);
+
+		if(abonentBase.empty())
+		{
+			Abonent abonent;
+			abonentBase.push_back(abonent);
+		}
+		return;
 	}
 };
 
@@ -253,9 +394,58 @@ void main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	DatabaseAbonent StartDatabase;
+	AbonentBase abonentBase;
 
-	StartDatabase.ShowAbonentBase();
+	int choice;
+	while (true)
+	{
+		cout << "МЕНЮ" << endl << endl << endl;
+		cout << "Выберите действие: " << endl;
+		cout << "1 - Показать базу абонентов;" << endl;
+		cout << "2 - Добавить абонента;" << endl;
+		cout << "3 - Найти информацию об абоненте;" << endl;
+		cout << "4 - Удалить абонента;" << endl;
+		cout << "0 - Выход" << endl;
 
+		cin >> choice;
+
+		if (choice == 0)
+			return;
+
+		switch (choice)
+		{
+		case 1:
+		{
+			for (int i = 0; i < abonentBase.Size(); i++)
+				abonentBase.ShowAbonentBase(i);
+			break;
+		}
+		case 2:
+		{
+			abonentBase.FillAbonentBase();
+			break;
+		}
+		case 3:
+		{
+			cout << "Введите имя абонента" << endl;
+			int size = 68;
+			char* abonentName = new char[size];
+			cin.ignore();
+			abonentBase.FindAbonent(gets_s(abonentName, size));
+			break;
+		}
+		case 4:
+		{
+			cout << "Введите номер абонента для удаления" << endl;
+			int deleteNumber;
+			cin >> deleteNumber;
+			abonentBase.DeleteAbonent(deleteNumber-1);
+			break;
+		}
+
+		}
+		system("pause");
+		system("cls");
+	}
 	system("pause");
 }
