@@ -164,120 +164,107 @@ using namespace std;
 class Abonent
 {
 	char* fio;
-	double homePhone;
-	double workPhone;
-	double mobilPhone;
+	long long homePhone;
+	long long workPhone;
+	long long mobilPhone;
 	char* additionally;
 	
 public:
 
-	Abonent( char* fio, double homePhone, double workPhone, double mobilPhone, char* additionally)
-	{
-		this->fio = fio;
-		this->additionally = additionally;
-		this->homePhone = homePhone;
-		this->workPhone = workPhone;
-		this->mobilPhone = mobilPhone;
-	}
-
 	Abonent() : Abonent(nullptr, 0, 0, 0, nullptr) {}
 
-	Abonent(char* fio, double homePhone, double workPhone, double mobilPhone) : Abonent(fio, homePhone, workPhone, mobilPhone, nullptr)	{}
+	Abonent(const char* fio, long long homePhone, long long workPhone, long long mobilPhone) : Abonent(fio, homePhone, workPhone, mobilPhone, nullptr)	{}
 
-	Abonent(char* fio, double homePhone, double workPhone) : Abonent (fio, homePhone, workPhone, 0, nullptr)	{}
+	Abonent(const char* fio, long long homePhone, long long workPhone) : Abonent (fio, homePhone, workPhone, 0, nullptr)	{}
 
-	Abonent(char* fio, double homePhone) : Abonent(fio, homePhone, 0, 0, nullptr)	{}
+	Abonent(const char* fio, long long homePhone) : Abonent(fio, homePhone, 0, 0, nullptr)	{}
 
-	explicit Abonent(char* fio) : Abonent(fio, 0, 0, 0, nullptr) {}
-	
-	//Abonent(const Abonent& other)
-	//{
-	//	int size = strlen(other.fio);
-	//	char* fio = new char[size];
-	//	for(int i: span(other.fio,other.fio+size))
-	//		fio[i] = other.fio[i];
-	//	this->fio = fio;
+	Abonent(const char* fio) : Abonent(fio, 0, 0, 0, nullptr) {}
 
-	//	homePhone = other.homePhone;
-	//	workPhone = other.workPhone;
-	//	mobilPhone = other.mobilPhone;
-
-	//	int sizeAd = strlen(other.additionally);
-	//	char* additionally = new char[sizeAd];
-	//	for (int i : span(other.additionally, other.additionally + sizeAd))
-	//		additionally[i] = other.additionally[i];
-	//	this->additionally = additionally;
-	//}
-
-	void SetFio (char* fio)
+	Abonent(const char* fio, long long homePhone, long long workPhone, long long mobilPhone, const char* additionally)
 	{
-		//int sizeAd = 68;
-		//char* fio = new char[size];
-		//cout << "Введите ФИО" << endl;
-		//cin.ignore();
-		//gets_s(fio, size);
-		//this->fio = fio;
+		if(fio!=nullptr)
+		{
+			int size = strlen(fio) + 1;
+			this->fio = new char[size];
+			strcpy_s(this->fio, size, fio);
+		}
+		else
+			this->fio = nullptr;
 
-		int size = strlen(fio);
-		char* buffer = new char[size+1];
-		for (int i = 0; i <= size; i++)
-			buffer[i] = fio[i];
-		this->fio = buffer;
-		buffer = nullptr;
+		if (additionally != nullptr)
+		{
+			int size = strlen(additionally) + 1;
+			this->additionally = new char[size];
+			strcpy_s(this->additionally, size, additionally);
+		}
+		else
+			this->additionally = nullptr;
 
-		//this->fio = fio;
-	}
-	const char* GetFio() { return fio; }
-
-	void SetHomePhone(double homePhone)
-	{
-		//cout << "Введите домашний номер" << endl;
-		//cin >> homePhone;
 		this->homePhone = homePhone;
-	}
-	double GetHomePhone() { return homePhone; }
-
-	void SetWorkPhone(double workPhone)
-	{
-		//cout << "Введите рабочий номер" << endl;
-		//cin >> workPhone;
 		this->workPhone = workPhone;
-	}
-	double GetWorkPhone() { return workPhone; }
-
-	void SetMobilPhone(double mobilPhone)
-	{
-		//cout << "Введите мобильный номер" << endl;
-		//cin >> mobilPhone;
 		this->mobilPhone = mobilPhone;
 	}
-	double GetMobilPhone() { return mobilPhone; }
 
-	void SetAdditionally(char* additionally)
+	Abonent(const Abonent& other)
 	{
-		//int sizeAd = 68;
-		//char* additionally = new char[sizeAd];
-		//cout << "Введите доп. информацию" << endl;
-		//cin.ignore();
-		//gets_s(additionally, sizeAd);
-		//this->additionally = additionally;
+		if (other.fio != nullptr)
+		{
+			int size = strlen(other.fio);
+			this->fio = new char[size];
+			strcpy_s(this->fio, size, other.fio);
+		}
+		else
+			this->fio = fio;
+		if (other.additionally != nullptr)
+		{
+			int size = strlen(other.additionally);
+			this->additionally = new char[size];
+			strcpy_s(this->additionally, size, other.additionally);
+		}
+		else
+			this->additionally = additionally;
 
-		int size = strlen(additionally);
-		char* buffer = new char[size+1];
-		for (int i = 0; i <= size; i++)
-			buffer[i] = additionally[i];
-		this->additionally = buffer;
-		buffer = additionally;
+		homePhone = other.homePhone;
+		workPhone = other.workPhone;
+		mobilPhone = other.mobilPhone;
+	}
 
-		//this->additionally = additionally;
+	~Abonent()
+	{
+		if(fio!=nullptr)
+			delete[] fio;
+		if (additionally != nullptr)
+			delete[] additionally;
+	}
+
+	void SetFio (char* newFio)
+	{
+		int size = strlen(newFio) + 1;
+		char* fio = new char[size+1];
+		strcpy_s(fio, size, newFio);
+		delete[] fio;
+	}
+
+	const char* GetFio() { return fio; }
+
+	void SetHomePhone(long long homePhone)	{this->homePhone = homePhone;}
+	long long GetHomePhone() { return homePhone; }
+
+	void SetWorkPhone(long long workPhone)	{this->workPhone = workPhone;}
+	long long GetWorkPhone() { return workPhone; }
+
+	void SetMobilPhone(long long mobilPhone)  {this->mobilPhone = mobilPhone;}
+	long long GetMobilPhone() { return mobilPhone; }
+
+	void SetAdditionally(char* newAdditionally)
+	{
+		int size = strlen(newAdditionally) + 1;
+		char* additionally = new char[size + 1];
+		strcpy_s(additionally, size, newAdditionally);
+		delete[] additionally;
 	}
 	const char* GetAdditionally() { return additionally; }
-
-	//~Abonent()
-	//{
-	//	delete[] fio;
-	//	delete[] additionally;
-	//}
 };
 
 class AbonentBase
@@ -292,56 +279,47 @@ public:
 		abonentBase.push_back(abonent);
 	}
 	
-	int Size()
-	{
-		return abonentBase.size();
-	}
+	int Size()	{return abonentBase.size();}
 
 	void FillAbonentBase()
 	{
+		const int size = 128;
 		if (abonentBase.front().GetFio() == nullptr)
 			abonentBase.pop_back();
 
 		Abonent abonent;
-		int size = 68;
-		char* fio = new char[size];
+		char fio[size];
 		cout << "Введите ФИО абонента" << endl;
 		cin.ignore();
 		abonent.SetFio(gets_s(fio, size));
 
 		cout << "Введите домашний номер" << endl;
-		double homePhone;
+		long long homePhone;
 		cin >> homePhone;
 		abonent.SetHomePhone(homePhone);
 
 		cout << "Введите рабочий номер" << endl;
-		double workPhone;
+		long long workPhone;
 		cin >> workPhone;
 		abonent.SetWorkPhone(workPhone);
 
 		cout << "Введите мобильный номер" << endl;
-		double mobilPhone;
+		long long mobilPhone;
 		cin >> mobilPhone;
 		abonent.SetMobilPhone(mobilPhone);
 
-		char* additionally = new char[size];
+		char additionally[size];
 		cout << "Введите доп. информацию" << endl;
 		cin.ignore();
 		abonent.SetAdditionally(gets_s(additionally, size));
 
 		abonentBase.push_back(abonent);
-
-		delete[]fio;
-		delete[]additionally;
 	}
 	
-	void ShowAbonentBase(int i)
+	int ShowAbonentBase(int i)
 	{
-		if (abonentBase.front().GetFio() == nullptr)
-		{
-			cout << "Нет записей!" << endl;
-			return;
-		}
+		if (abonentBase.at(i).GetFio() == nullptr)
+			return -1;
 		else
 		{
 			cout << "Абонент " << i + 1 << endl;
@@ -352,32 +330,30 @@ public:
 			cout << "Доп. информация: " << abonentBase.at(i).GetAdditionally() << endl << endl;
 		}
 	}
-	void FindAbonent(const char* fio)
+	int FindAbonent(const char* fio)
 	{
 		if (abonentBase.front().GetFio() == nullptr)
-		{
-			cout << "Нет записей!" << endl;
-			return;
-		}
+			return -1;
 
 		for (int i = 0; i < abonentBase.size(); i++)
 			if (strcmp(abonentBase.at(i).GetFio(), fio) == 0)
-			{
-				ShowAbonentBase(i);
-				return;
-			}
-
-		cout << "Совпадений нет!" << endl;
-		return;
+				return(i);
+		return -1;
 
 	}
-	void DeleteAbonent(int abonentNumber)
+
+	int CopyAbonent(int abonentNumber)
 	{
 		if (abonentBase.size() < abonentNumber)
-		{
-			cout << "Неверный номер абонента" << endl;
-			return;
-		}
+			return -1;
+		abonentBase.push_back(abonentBase.at(abonentNumber));
+	}
+
+	int DeleteAbonent(int abonentNumber)
+	{
+		if (abonentBase.size() < abonentNumber)
+			return -1;
+
 		abonentBase.erase(abonentBase.begin() + abonentNumber);
 
 		if(abonentBase.empty())
@@ -385,7 +361,6 @@ public:
 			Abonent abonent;
 			abonentBase.push_back(abonent);
 		}
-		return;
 	}
 };
 
@@ -401,10 +376,11 @@ void main()
 	{
 		cout << "МЕНЮ" << endl << endl << endl;
 		cout << "Выберите действие: " << endl;
-		cout << "1 - Показать базу абонентов;" << endl;
-		cout << "2 - Добавить абонента;" << endl;
-		cout << "3 - Найти информацию об абоненте;" << endl;
-		cout << "4 - Удалить абонента;" << endl;
+		cout << "1 - Показать базу абонентов" << endl;
+		cout << "2 - Добавить абонента" << endl;
+		cout << "3 - Найти информацию об абоненте" << endl;
+		cout << "4 - Удалить абонента" << endl;
+		cout << "5 - Копировать запись абонента" << endl;
 		cout << "0 - Выход" << endl;
 
 		cin >> choice;
@@ -417,7 +393,12 @@ void main()
 		case 1:
 		{
 			for (int i = 0; i < abonentBase.Size(); i++)
-				abonentBase.ShowAbonentBase(i);
+				if(abonentBase.ShowAbonentBase(i)==-1)
+				{
+					cout << "Абонент " << i + 1 << endl;
+					cout << "Нет данных" << endl;
+					continue;
+				}
 			break;
 		}
 		case 2:
@@ -428,10 +409,14 @@ void main()
 		case 3:
 		{
 			cout << "Введите имя абонента" << endl;
-			int size = 68;
-			char* abonentName = new char[size];
+			const int size = 128;
+			char abonentName[size];
 			cin.ignore();
-			abonentBase.FindAbonent(gets_s(abonentName, size));
+			int resultFind = abonentBase.FindAbonent(gets_s(abonentName, size));
+			if (resultFind == -1)
+				cout << "Совпадений нет!" << endl;
+			else
+				abonentBase.ShowAbonentBase(resultFind);
 			break;
 		}
 		case 4:
@@ -439,7 +424,19 @@ void main()
 			cout << "Введите номер абонента для удаления" << endl;
 			int deleteNumber;
 			cin >> deleteNumber;
-			abonentBase.DeleteAbonent(deleteNumber-1);
+			int deleteResult = abonentBase.DeleteAbonent(deleteNumber-1);
+			if (deleteResult == -1)
+				cout << "Ошибка операции. Неверный номер абонента." << endl;
+			break;
+		}
+		case 5:
+		{
+			cout << "Введите номер абонента для копирования" << endl;
+			int copyNumber;
+			cin >> copyNumber;
+			int copyResult = abonentBase.CopyAbonent(copyNumber - 1);
+			if (copyResult == -1)
+				cout << "Ошибка операции. Неверный номер абонента." << endl;
 			break;
 		}
 
