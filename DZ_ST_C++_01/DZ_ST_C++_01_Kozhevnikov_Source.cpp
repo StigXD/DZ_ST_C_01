@@ -210,20 +210,21 @@ public:
 	{
 		if (other.fio != nullptr)
 		{
-			int size = strlen(other.fio);
+			int size = strlen(other.fio)+1;
 			this->fio = new char[size];
 			strcpy_s(this->fio, size, other.fio);
 		}
 		else
-			this->fio = fio;
+			this->fio = nullptr;
+
 		if (other.additionally != nullptr)
 		{
-			int size = strlen(other.additionally);
+			int size = strlen(other.additionally)+1;
 			this->additionally = new char[size];
 			strcpy_s(this->additionally, size, other.additionally);
 		}
 		else
-			this->additionally = additionally;
+			this->additionally = nullptr;
 
 		homePhone = other.homePhone;
 		workPhone = other.workPhone;
@@ -238,12 +239,11 @@ public:
 			delete[] additionally;
 	}
 
-	void SetFio (char* newFio)
+	void SetFio (char* fio)
 	{
-		int size = strlen(newFio) + 1;
-		char* fio = new char[size+1];
-		strcpy_s(fio, size, newFio);
-		delete[] fio;
+		int size = strlen(fio) + 1;
+		this-> fio = new char[size];
+		strcpy_s(this->fio, size, fio);
 	}
 
 	const char* GetFio() { return fio; }
@@ -257,12 +257,11 @@ public:
 	void SetMobilPhone(long long mobilPhone)  {this->mobilPhone = mobilPhone;}
 	long long GetMobilPhone() { return mobilPhone; }
 
-	void SetAdditionally(char* newAdditionally)
+	void SetAdditionally(char* additionally)
 	{
-		int size = strlen(newAdditionally) + 1;
-		char* additionally = new char[size + 1];
-		strcpy_s(additionally, size, newAdditionally);
-		delete[] additionally;
+		int size = strlen(additionally) + 1;
+		this ->additionally = new char[size];
+		strcpy_s(this->additionally, size, additionally);
 	}
 	const char* GetAdditionally() { return additionally; }
 };
