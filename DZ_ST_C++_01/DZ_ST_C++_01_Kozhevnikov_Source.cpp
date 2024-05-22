@@ -26,40 +26,9 @@ class Fraction
 		return denominator2;
 	}
 	
-	//int GreatestCommonDivisor(int a, int b)
-	//{
-	//	if (a < b)
-	//		swap(a, b);
-
-	//	while (a % b != 0)
-	//	{
-	//		a = a % b;
-	//		swap(a, b);
-	//	}
-
-	//	return abs(b);
-	//}
-
-	///// <summary>
-	///// Наименьшее общее кратное.
-	///// Наименьшее число, которое кратно a и b
-	///// </summary>
-	//int LeastCommonMultiple(int a, int b)
-	//{
-	//	return a * b / GreatestCommonDivisor(a, b);
-	//}
-
-
 	int FindNok(int denominator1, int denominator2)
 	{
 		return denominator1 * denominator2 / FindNod(denominator1, denominator2);
-	}
-
-	void CommonDenominator(Fraction& fract, int nod)
-	{
-		nod /= fract.denominator;
-		fract.numerator *= nod;
-		fract.denominator *= nod;
 	}
 
 	void Reduction(Fraction& fract)
@@ -89,59 +58,69 @@ public:
 	void SetDenominator(int value) { denominator = value; }
 	int GetDenominator() { return denominator; }
 
-	Fraction Addition(Fraction& fract1, Fraction& fract2)
+	Fraction Addition(const Fraction& fract2)
 	{
-		Fraction tempA = fract1;
+		Fraction tempA = *this;
 		Fraction tempB = fract2;
 
 		const int NOK = FindNok(tempA.denominator, tempB.denominator);
 
-		CommonDenominator(tempA, NOK);
-		CommonDenominator(tempB, NOK);
+		tempA.numerator *= NOK / tempA.denominator;
+		tempA.denominator = NOK;
+		
+		tempB.numerator *= NOK / tempB.denominator;
+		tempB.denominator = NOK;
 
-		result.numerator = tempA.numerator + tempA.numerator;
-		result.denominator = fract1.denominator;
+		tempA.numerator += tempB.numerator;
 
-		Reduction(result);
+		Reduction(tempA);
+		return tempA;
 	}
 
-	void Difference(Fraction& fract1, Fraction& fract2, Fraction& result)
+	Fraction Difference(Fraction& fract2)
 	{
-		int nok = FindNok(fract1.denominator, fract2.denominator);
+		Fraction tempA = *this;
+		Fraction tempB = fract2;
+		
+		int NOK = FindNok(tempA.denominator, tempB.denominator);
 
-		CommonDenominator(fract1, nok);
-		CommonDenominator(fract2, nok);
+		tempA.numerator *= NOK / tempA.denominator;
+		tempA.denominator = NOK;
 
-		result.numerator = fract1.numerator - fract2.numerator;
-		result.denominator = fract1.denominator;
+		tempB.numerator *= NOK / tempB.denominator;
+		tempB.denominator = NOK;
 
-		Reduction(result);
+		tempA.numerator -= tempB.numerator;
+
+		Reduction(tempA);
+
+		return tempA;
 	}
 
-	void Multiplication(Fraction& fract1, Fraction& fract2, Fraction& result)
+	Fraction Multiplication(Fraction& fract2)
 	{
-		int nok = FindNok(fract1.denominator, fract2.denominator);
+		Fraction tempA = *this;
+		Fraction tempB = fract2;
+		
+		tempA.numerator *= tempB.numerator;
+		tempA.denominator *= tempB.denominator;
 
-		CommonDenominator(fract1, nok);
-		CommonDenominator(fract2, nok);
+		Reduction(tempA);
 
-		result.numerator = fract1.numerator * fract2.numerator;
-		result.denominator = fract1.denominator * fract2.denominator;
-
-		Reduction(result);
+		return tempA;
 	}
 
-	void Degree(Fraction& fract1, Fraction& fract2, Fraction& result)
+	Fraction Degree(Fraction& fract2)
 	{
-		int nok = FindNok(fract1.denominator, fract2.denominator);
+		Fraction tempA = *this;
+		Fraction tempB = fract2;
+		
+		tempA.numerator *= tempB.denominator;
+		tempA.denominator *= tempB.numerator;
 
-		CommonDenominator(fract1, nok);
-		CommonDenominator(fract2, nok);
+		Reduction(tempA);
 
-		result.numerator = fract1.numerator * fract2.denominator;
-		result.denominator = fract1.denominator * fract2.numerator;
-
-		Reduction(result);
+		return tempA;
 	}
 };
 
@@ -167,16 +146,16 @@ void main()
 	cin >> denominator;
 	fract2.SetDenominator(denominator);
 
-	resultFract.Addition(fract1, fract2, resultFract);
+	resultFract = fract1.Addition(fract2);
 	cout << "Сумма = " << resultFract.GetNumerator() << "/" << resultFract.GetDenominator() << endl;
 
-	resultFract.Difference(fract1, fract2, resultFract);
+	resultFract = fract1.Difference(fract2);
 	cout << "Разность = " << resultFract.GetNumerator() << "/" << resultFract.GetDenominator() << endl;
 
-	resultFract.Multiplication(fract1, fract2, resultFract);
+	resultFract = fract1.Multiplication(fract2);
 	cout << "Произведение = " << resultFract.GetNumerator() << "/" << resultFract.GetDenominator() << endl;
 
-	resultFract.Degree(fract1, fract2, resultFract);
+	resultFract = fract1.Degree(fract2);
 	cout << "Деление = " << resultFract.GetNumerator() << "/" << resultFract.GetDenominator() << endl;
 
 	system("pause");
@@ -304,7 +283,7 @@ void main()
 //		Abonent abonent;
 //		abonentBase.push_back(abonent);
 //	}
-//	
+//
 //	int Size()	{return abonentBase.size();}
 //
 //	void FillAbonentBase()
@@ -380,7 +359,9 @@ void main()
 //		if (abonentBase.size() < abonentNumber)
 //			return -1;
 //
-//		abonentBase.erase(abonentBase.begin() + abonentNumber);
+//		for (int i = abonentNumber; i < abonentBase.size()-1; i++)
+//			abonentBase[i] = abonentBase[i+1];
+//		abonentBase.pop_back();
 //
 //		if(abonentBase.empty())
 //		{
