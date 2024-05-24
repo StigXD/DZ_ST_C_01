@@ -712,25 +712,41 @@ using namespace std;
 class TimeSpan
 {
 	long long totalMilliseconds;
+	const int millisecondsInDay = 86400000;
+	const int millisecondsInHours = 3600000;
+	const int millisecondsInMinutes = 60000;
+	const int millisecondsInSeconds = 1000;
 
 public:
-	int GetDay() { return totalMilliseconds / 86400000; }
 
-	int GetHours() { return (totalMilliseconds / 3600000 % 60); }
+	TimeSpan()
+	{
+		totalMilliseconds = 0;
+	}
 
-	int GetTotalHours() { return totalMilliseconds / 3600000; }
+	TimeSpan(long long days, long long hours, long long minutes, long long seconds, long long milliseconds )
+	{
+		totalMilliseconds += day * millisecondsInDay + hours * millisecondsInHours + minutes * millisecondsInMinutes + seconds * millisecondsInSeconds;
+	}
 
-	int GetMinutes() { return totalMilliseconds / 60000 % 60; }
 
-	int GetTotalMinutes() { return totalMilliseconds / 60000; }
+	unsigned char GetDay() const { return totalMilliseconds / millisecondsInDay; }
 
-	int GetSeconds() { return totalMilliseconds / 1000 % 60; }
+	unsigned char GetHours() const { return (totalMilliseconds % millisecondsInDay / millisecondsInHours); }
 
-	int GetTotalSeconds() { return totalMilliseconds / 1000; }
+	int GetTotalHours() const { return totalMilliseconds / millisecondsInHours; }
 
-	long long GetMillisrconds() { return totalMilliseconds % 1000; }
+	int GetMinutes() const { return totalMilliseconds % millisecondsInHours / millisecondsInMinutes; }
 
-	long long GetTotalMillisrconds() { return totalMilliseconds; }
+	int GetTotalMinutes() const { return totalMilliseconds / millisecondsInMinutes; }
+
+	int GetSeconds() const { return totalMilliseconds % millisecondsInMinutes / millisecondsInSeconds; }
+
+	int GetTotalSeconds() const { return totalMilliseconds / millisecondsInSeconds; }
+
+	long long GetMillisrconds() const { return totalMilliseconds % millisecondsInSeconds; }
+
+	long long GetTotalMilliseconds() const { return totalMilliseconds; }
 
 	TimeSpan operator-(const TimeSpan& rigth) const
 	{
@@ -750,91 +766,146 @@ public:
 
 	TimeSpan AddDays(long long days)
 	{
-		totalMilliseconds += days * 86400000;
+		totalMilliseconds += days * millisecondsInDay;
 		return *this;
 	}
 
 	TimeSpan AddHours(long long hours)
 	{
-		totalMilliseconds += hours * 3600000;
+		totalMilliseconds += hours * millisecondsInHours;
 		return *this;
 	}
 
 	TimeSpan AddMinutes(long long minutes)
 	{
-		totalMilliseconds += minutes * 60000;
+		totalMilliseconds += minutes * millisecondsInMinutes;
 		return *this;
 	}
 
 	TimeSpan AddSeconds(long long seconds)
 	{
-		totalMilliseconds += seconds * 1000;
+		totalMilliseconds += seconds * millisecondsInSeconds;
 		return *this;
 	}
 
-	TimeSpan AddMillisrconds(long long milliseconds)
+	TimeSpan AddMilliseconds(long long milliseconds)
 	{
 		totalMilliseconds += milliseconds;
 		return *this;
 	}
 
-	string ToString()
+	string ToString()const
 	{
-
+		return ToString(" ", ":", ".");
 	}
 
-	string ToString(string& daySeparator, string& timeSeparator, string& millisecondsSeparator)
+	string ToString(const string& daySeparator, const string& timeSeparator, const string& millisecondsSeparator)const
 	{
-
+		return to_string(GetDay()) + daySeparator + to_string(GetHours()) + timeSeparator + to_string(GetMinutes()) + timeSeparator + to_string(GetSeconds()) + millisecondsSeparator + to_string(GetMillisrconds());
 	}
-	string ToString(string& dayHoursSeparator, string& hoursMinutesSeparator, string& minutesSecondsSeparator, string& secondsMillisecondsSeparator)
+	string ToString(const string& dayHoursSeparator, const string& hoursMinutesSeparator, const string& minutesSecondsSeparator, const string& secondsMillisecondsSeparator) const
 	{
-		return (GetDay() + dayHoursSeparator + GetHours() + hoursMinutesSeparator + GetMinutes() + minutesSecondsSeparator + GetSeconds() + secondsMillisecondsSeparator + GetMillisrconds());
+		return to_string(GetDay()) + dayHoursSeparator + to_string(GetHours()) + hoursMinutesSeparator + to_string(GetMinutes()) + minutesSecondsSeparator + to_string(GetSeconds()) + secondsMillisecondsSeparator + to_string(GetMillisrconds());
 	}
 };
 
-//class DateTime
-//{
-//	unsigned short year;
-//	unsigned char month;
-//	unsigned char day;
-//	unsigned char hours;
-//	unsigned char minutes;
-//	unsigned char seconds;
-//	unsigned short milliseconds;
-//
-//public:
-//
-//	DateTime() {}
-//
-//	DateTime(int year, int month, int day, int hours, int minutes, int seconds) {}
-//
-//	DateTime(int year, int month, int day, int hours, int minutes, int seconds,int milliseconds) {}
-//
-//	int GetYear();
-//	void SetYear(int year);
-//	int GetMonth();
-//	void SetMonth(int month);
-//	int GetDay();
-//	void SetDay(int day);
-//	int GetHours();
-//	void SetHours(int hours);
-//	int GetMinutes();
-//	void SetMinutes(int minutes);
-//	int GetSeconds();
-//	void SetSeconds(int seconds);
-//	int GetMillisrconds();
-//	void SetMillisrconds(int milliseconds);
-//
-//	DateTime operator+(const TimeSpan& rigth) const;
-//	friend DateTime operator+(const TimeSpan& left, const DateTime& rigth);
-//
-//	TimeSpan operator-(const DateTime& rigth) const;
-//	DateTime operator-(const TimeSpan& rigth) const;
-//	friend DateTime operator-(const TimeSpan& left, const DateTime& rigth);
-//
-//	string ToString();
-//};
+class DateTime
+{
+	static const 
+
+	unsigned short year;
+	unsigned char month;
+	unsigned char day;
+	unsigned char hours;
+	unsigned char minutes;
+	unsigned char seconds;
+	unsigned short milliseconds;
+
+public:
+
+	DateTime():DateTime(0, 0, 0, 0, 0, 0, 0)
+	{
+	
+	}
+
+	DateTime(unsigned short year, char month, char day) : DateTime(year, month, day, 0, 0, 0, 0)
+	{
+
+	}
+
+	DateTime(unsigned short year, char month, char day, char hours, char minutes, char seconds) : DateTime( year,  month,  day,  hours,  minutes,  seconds, 0)
+	{
+
+	}
+
+	DateTime(
+		const unsigned short year,
+		const char month,
+		const char day,
+		const char hours,
+		const char minutes,
+		const char seconds,
+		const unsigned short milliseconds)
+	{
+		this->year = year;
+		this->month = month;
+		this->day = day;
+		this->hours = hours;
+		this->minutes = minutes;
+		this->seconds = seconds;
+		this->milliseconds = milliseconds;
+	}
+
+	unsigned short GetYear() { return year; }
+
+	void SetYear(int year) { this->year = year; }
+
+	char GetMonth() { return year; }
+
+	void SetMonth(int month) { this->month = month; }
+
+	char GetDay() { return year; }
+
+	void SetDay(int day) { this->day = day; }
+
+	char GetHours() { return year; }
+
+	void SetHours(int hours) { this->hours = hours; }
+
+	char GetMinutes() { return year; }
+
+	void SetMinutes(int minutes) { this->minutes = minutes; }
+
+	char GetSeconds() { return year; }
+
+	void SetSeconds(int seconds) { this->seconds = seconds; }
+
+	unsigned short GetMillisrconds() { return year; }
+
+	void SetMillisrconds(int milliseconds) { this->milliseconds = milliseconds; }
+
+
+	DateTime operator+(const TimeSpan& rigth) const
+	{
+		DateTime left = *this;
+		TimeSpan result;
+		result.AddDays(GetDay())
+	}
+	friend DateTime operator+(const TimeSpan& left, const DateTime& rigth)
+	{
+
+	}
+	DateTime operator-(const TimeSpan& rigth) const
+	{
+
+	}
+	friend DateTime operator-(const DateTime& left, const TimeSpan& rigth)
+	{
+
+	}
+
+	string ToString();
+};
 
 void main()
 {
@@ -843,8 +914,83 @@ void main()
 	TimeSpan data;
 
 	data.AddDays(1);
+	data.AddHours(1);
+	data.AddMinutes(1);
+	data.AddSeconds(1);
+	data.AddMilliseconds(1);
 
 
+	cout << data.ToString(" ", ":", ".") << endl;
+	cout << data.GetTotalHours() << endl;
+	cout << data.GetTotalMinutes() << endl;
+	cout << data.GetTotalSeconds() << endl;
+	cout << data.GetTotalMilliseconds() << endl;
+
+	DateTime dt1(2024, 05, 25);
+	DateTime dt2(2024, 05, 24);
+	DateTime dt3(2024, 05, 24, 23, 59, 59);
+	DateTime dt4(2024, 05, 24, 23, 59, 59, 999);
+	DateTime dt5(2024, 05, 25, 0, 0, 1);
+	DateTime dt6(2024, 05, 25, 0, 0, 0, 1);
+	DateTime dt7(2024, 05, 24, 1, 1, 1, 1);
+	DateTime dt8(2024, 05, 25, 1, 1, 1, 1);
+
+	TimeSpan ts1(0, 0, 0, 1);
+	TimeSpan ts2(0, 0, 0, -1);
+	TimeSpan ts3(0, 0, 1, 0);
+	TimeSpan ts4(0, 0, -1, 0);
+	TimeSpan ts5(0, 1, 0, 0);
+	TimeSpan ts6(0, -1, 0, 0);
+	TimeSpan ts7(1, 0, 0, 0);
+	TimeSpan ts8(-1, 0, 0, 0);
+	TimeSpan ts9(100, 0, 0, 0);
+	TimeSpan ts0(-100, 0, 0, 0);
+
+	cout << endl << "DateTime - DateTime" << endl;
+	cout << dt1.ToString() << " - " << dt1.ToString() << " = " << (dt1 - dt1).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt2.ToString() << " = " << (dt1 - dt2).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt3.ToString() << " = " << (dt1 - dt3).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt4.ToString() << " = " << (dt1 - dt4).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt5.ToString() << " = " << (dt1 - dt5).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt6.ToString() << " = " << (dt1 - dt6).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt7.ToString() << " = " << (dt1 - dt7).ToString() << endl;
+	cout << dt1.ToString() << " - " << dt8.ToString() << " = " << (dt1 - dt8).ToString() << endl;
+
+	cout << endl << "DateTime + TimeSpan" << endl;
+	cout << dt1.ToString() << " + " << ts1.ToString() << " = " << (dt1 + ts1).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts2.ToString() << " = " << (dt1 + ts2).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts3.ToString() << " = " << (dt1 + ts3).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts4.ToString() << " = " << (dt1 + ts4).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts5.ToString() << " = " << (dt1 + ts5).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts6.ToString() << " = " << (dt1 + ts6).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts7.ToString() << " = " << (dt1 + ts7).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts8.ToString() << " = " << (dt1 + ts8).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts9.ToString() << " = " << (dt1 + ts9).ToString() << endl;
+	cout << dt1.ToString() << " + " << ts0.ToString() << " = " << (dt1 + ts0).ToString() << endl;
+
+	cout << endl << "DateTime - TimeSpan" << endl;
+	cout << dt1.ToString() << " - " << ts1.ToString() << " = " << (dt1 - ts1).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts2.ToString() << " = " << (dt1 - ts2).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts3.ToString() << " = " << (dt1 - ts3).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts4.ToString() << " = " << (dt1 - ts4).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts5.ToString() << " = " << (dt1 - ts5).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts6.ToString() << " = " << (dt1 - ts6).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts7.ToString() << " = " << (dt1 - ts7).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts8.ToString() << " = " << (dt1 - ts8).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts9.ToString() << " = " << (dt1 - ts9).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts0.ToString() << " = " << (dt1 - ts0).ToString() << endl;
+	
+	cout << endl << "DateTime - TimeSpan + TimeSpan" << endl;
+	cout << dt1.ToString() << " - " << ts1.ToString() << " + " << ts1.ToString() << " = " << (dt1 - ts1 + ts1).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts2.ToString() << " + " << ts2.ToString() << " = " << (dt1 - ts2 + ts2).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts3.ToString() << " + " << ts3.ToString() << " = " << (dt1 - ts3 + ts3).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts4.ToString() << " + " << ts4.ToString() << " = " << (dt1 - ts4 + ts4).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts5.ToString() << " + " << ts5.ToString() << " = " << (dt1 - ts5 + ts5).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts6.ToString() << " + " << ts6.ToString() << " = " << (dt1 - ts6 + ts6).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts7.ToString() << " + " << ts7.ToString() << " = " << (dt1 - ts7 + ts7).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts8.ToString() << " + " << ts8.ToString() << " = " << (dt1 - ts8 + ts8).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts9.ToString() << " + " << ts9.ToString() << " = " << (dt1 - ts9 + ts9).ToString() << endl;
+	cout << dt1.ToString() << " - " << ts0.ToString() << " + " << ts0.ToString() << " = " << (dt1 - ts0 + ts0).ToString() << endl;
 
 	system("pause");
 
