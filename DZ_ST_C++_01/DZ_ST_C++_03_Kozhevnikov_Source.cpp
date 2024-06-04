@@ -428,10 +428,6 @@ using namespace std;
 //}
 
 
-
-
-
-
 //Встреча №7
 
 // Задание 1. 
@@ -610,8 +606,6 @@ using namespace std;
 //}
 
 
-
-
 //Встреча №8
 
 //Задание 1.
@@ -620,430 +614,430 @@ using namespace std;
 //Задание 2.
 //Добавить в уже существующий класс Array конструктор переноса.
 
-//class MyString
-//{
-//	int length;
-//	char* str;
-//
-//public:
-//	MyString() : MyString("")
-//	{
-//	}
-//
-//	MyString(const char* str)
-//	{
-//		length = strlen(str);
-//		this->str = new char[length + 1];
-//		strcpy_s(this->str, length + 1, str);
-//	}
-//
-//	MyString(const MyString& other)
-//	{
-//		length = other.length;
-//		str = new char[length + 1];
-//		strcpy_s(str, length + 1, other.str);
-//	}
-//
-//	MyString(MyString&& other)
-//	{
-//		length = other.length;
-//		str = other.str;
-//
-//		other.str = nullptr;
-//		other.length = 0;
-//	}
-//
-//	~MyString()
-//	{
-//		delete[] str;
-//	}
-//
-//	char* GetStr()
-//	{
-//		return str;
-//	}
-//
-//	MyString operator+(const MyString& other)
-//	{
-//		int NewLength = length + other.length + 2;
-//		char* NewStr = new char[NewLength];
-//		strcpy_s(NewStr, NewLength, str);
-//		strcat_s(NewStr, NewLength, other.str);
-//		delete[]str;
-//		str = NewStr;
-//		length = NewLength;
-//		return *this;
-//	}
-//
-//	MyString operator=(const MyString& other)
-//	{
-//		length = other.length;
-//		str = new char[length + 1];
-//		strcpy_s(str, length, other.str);
-//		return *this;
-//	}
-//
-//	MyString operator=(MyString&& other)
-//	{
-//		length = other.length;
-//		str = other.str;
-//
-//		other.str = nullptr;
-//		other.length = 0;
-//
-//		return *this;
-//	}
-//
-//};
-//
-//class Array
-//{
-//	int size;
-//	int* arr;
-//
-//	static void FixSize(int& size)
-//	{
-//		if (size < 0)
-//			size = 0;
-//	}
-//
-//	static int GetRandomValue(int startRange, int endRange)
-//	{
-//		return rand() % (endRange - startRange + 1) + startRange;
-//	}
-//
-//public:
-//	Array()
-//	{
-//		size = 0;
-//		arr = nullptr;
-//	}
-//
-//	explicit Array(int size) : Array(size, 0)
-//	{
-//	}
-//
-//	Array(int size, int value)
-//	{
-//		FixSize(size);
-//
-//		this->size = size;
-//		arr = new int[size];
-//		for (int i = 0; i < size; i++)
-//			arr[i] = value;
-//	}
-//
-//	Array(int* arr, int size)
-//	{
-//		FixSize(size);
-//
-//		this->size = size;
-//		this->arr = new int[size];
-//		for (int i = 0; i < size; i++)
-//			this->arr[i] = arr[i];
-//	}
-//
-//	Array(const Array& other)
-//	{
-//		size = other.size;
-//		arr = new int[size];
-//		for (int i = 0; i < size; i++)
-//			arr[i] = other.arr[i];
-//	}
-//	
-//	Array(Array&& other)
-//	{
-//		size = other.size;
-//		arr = other.arr;
-//
-//		other.size = 0;
-//		other.arr = nullptr;
-//	}
-//
-//	~Array()
-//	{
-//		if (arr != nullptr)
-//			delete[] arr;
-//	}
-//
-//	int Size() const
-//	{
-//		return size;
-//	}
-//
-//	int& At(const int index)
-//	{
-//		return arr[index];
-//	}
-//
-//	int At(const int index) const
-//	{
-//		return arr[index];
-//	}
-//
-//	bool IsEmpty() const
-//	{
-//		return size == 0;
-//	}
-//
-//	void Clear()
-//	{
-//		size = 0;
-//
-//		if (arr != nullptr)
-//			delete[] arr;
-//
-//		arr = nullptr;
-//	}
-//
-//	void Resize(int size)
-//	{
-//		FixSize(size);
-//
-//		int* newArr = size == 0 ? nullptr : new int[size];
-//		int minSize = min(this->size, size);
-//		for (int i = 0; i < minSize; i++)
-//			newArr[i] = arr[i];
-//		for (int i = minSize; i < size; i++)
-//			newArr[i] = 0;
-//
-//		if (arr != nullptr)
-//			delete[] arr;
-//
-//		this->size = size;
-//		arr = newArr;
-//	}
-//
-//	void Randomize(int startRange, int endRange)
-//	{
-//		if (IsEmpty())
-//			return;
-//
-//		for (int i = 0; i < size; i++)
-//			arr[i] = GetRandomValue(startRange, endRange);
-//	}
-//
-//	void Sort(bool desc = false)
-//	{
-//		if (IsEmpty())
-//			return;
-//
-//		if (desc)
-//			sort(arr, arr + size, [](int& a, int& b) { return a > b; });
-//		else
-//			sort(arr, arr + size, [](int& a, int& b) { return a < b; });
-//	}
-//
-//	void Swap(int firstIndex, int secondIndex)
-//	{
-//		swap(arr[firstIndex], arr[secondIndex]);
-//	}
-//
-//	void Concatenate(const Array& other)
-//	{
-//		if (other.IsEmpty())
-//			return;
-//
-//		int newSize = size + other.size;
-//		int* newArr = new int[newSize];
-//		for (int i = 0; i < size; i++)
-//			newArr[i] = arr[i];
-//		for (int i = 0; i < other.size; i++)
-//			newArr[size + i] = other.arr[i];
-//
-//		if (arr != nullptr)
-//			delete[] arr;
-//
-//		this->size = newSize;
-//		arr = newArr;
-//	}
-//
-//	void Insert(int index, int value)
-//	{
-//		int newSize = size + 1;
-//		int* newArr = new int[newSize];
-//		for (int i = 0; i < index; i++)
-//			newArr[i] = arr[i];
-//		newArr[index] = value;
-//		for (int i = index; i < size; i++)
-//			newArr[i + 1] = arr[i];
-//
-//		if (arr != nullptr)
-//			delete[] arr;
-//
-//		this->size = newSize;
-//		arr = newArr;
-//	}
-//
-//	void InsertFront(int value)
-//	{
-//		Insert(0, value);
-//	}
-//
-//	void InsertBack(int value)
-//	{
-//		Insert(size, value);
-//	}
-//
-//	void Remove(int index)
-//	{
-//		if (size <= 1)
-//		{
-//			Clear();
-//			return;
-//		}
-//
-//		int newSize = size - 1;
-//		int* newArr = new int[newSize];
-//		for (int i = 0; i < index; i++)
-//			newArr[i] = arr[i];
-//		for (int i = index; i < newSize; i++)
-//			newArr[i] = arr[i + 1];
-//
-//		if (arr != nullptr)
-//			delete[] arr;
-//
-//		this->size = newSize;
-//		arr = newArr;
-//	}
-//
-//	void RemoveFront()
-//	{
-//		Remove(0);
-//	}
-//
-//	void RemoveBack()
-//	{
-//		Remove(size - 1);
-//	}
-//
-//	void Replace(int oldValue, int newValue)
-//	{
-//		for (int i = 0; i < size; i++)
-//			if (arr[i] == oldValue)
-//				arr[i] = newValue;
-//	}
-//
-//	double GetAverage() const
-//	{
-//		if (IsEmpty())
-//			return 0;
-//
-//		int sum = 0;
-//		for (int x : span(arr, arr + size))
-//			sum += x;
-//
-//		return (double)sum / size;
-//	}
-//
-//	int GetSum() const
-//	{
-//		int sum = 0;
-//		for (int x : span(arr, arr + size))
-//			sum += x;
-//
-//		return sum;
-//	}
-//
-//	int GetMin() const
-//	{
-//		if (IsEmpty())
-//			return 0;
-//
-//		int min = arr[0];
-//		for (int x : span(arr, arr + size))
-//			if (x < min)
-//				min = x;
-//
-//		return min;
-//	}
-//
-//	int GetMax() const
-//	{
-//		if (IsEmpty())
-//			return 0;
-//
-//		int max = arr[0];
-//		for (int x : span(arr, arr + size))
-//			if (x > max)
-//				max = x;
-//
-//		return max;
-//	}
-//
-//	int Find(int value) const
-//	{
-//		for (int i = 0; i < size; i++)
-//			if (arr[i] == value)
-//				return i;
-//
-//		return -1;
-//	}
-//
-//	int FindLast(int value) const
-//	{
-//		for (int i = size - 1; i >= 0; i--)
-//			if (arr[i] == value)
-//				return i;
-//
-//		return -1;
-//	}
-//
-//	string ToString() const
-//	{
-//		return ToString(", ");
-//	}
-//
-//	string ToString(string separator) const
-//	{
-//		if (IsEmpty())
-//			return "";
-//
-//		string str = to_string(arr[0]);
-//		for (int x : span(arr + 1, arr + size))
-//			str += separator + to_string(x);
-//
-//		return str;
-//	}
-//};
-//
-//void F1(Array arr)
-//{
-//	cout << "arr = [" << arr.ToString() << "] with size = " << arr.Size() << endl;
-//}
-//
-//void main()
-//{
-//	setlocale(LC_ALL, "ru");
-//
-//	MyString str1;
-//	MyString str2 = "Qwerty";
-//	MyString str3 = "Hello, World!";
-//	MyString str4 = str2;
-//	MyString str5 = str2+str3;
-//
-//	cout << "str1 = " << str1.GetStr() << endl;
-//	cout << "str2 = " << str2.GetStr() << endl;
-//	cout << "str3 = " << str3.GetStr() << endl;
-//	cout << "str4 = " << str4.GetStr() << endl;
-//	cout << "str5 = " << str5.GetStr() << endl;
-//
-//
-//	Array arr2(4);
-//	Array arr3(5, 777);
-//	Array arr4(arr3);
-//	Array arr1 = arr2; 
-//	
-//
-//	cout << "arr1 = [" << arr1.ToString() << "] with size = " << arr1.Size() << endl;
-//	cout << "arr2 = [" << arr2.ToString() << "] with size = " << arr2.Size() << endl;
-//	cout << "arr3 = [" << arr3.ToString() << "] with size = " << arr3.Size() << endl;
-//	cout << "arr4 = [" << arr4.ToString() << "] with size = " << arr4.Size() << endl;
-//
-//
-//
-//	system("pause");
-//}
+class MyString
+{
+	int length;
+	char* str;
+
+public:
+	MyString() : MyString("")
+	{
+	}
+
+	MyString(const char* str)
+	{
+		length = strlen(str);
+		this->str = new char[length + 1];
+		strcpy_s(this->str, length + 1, str);
+	}
+
+	MyString(const MyString& other)
+	{
+		length = other.length;
+		str = new char[length + 1];
+		strcpy_s(str, length + 1, other.str);
+	}
+
+	MyString(MyString&& other)
+	{
+		length = other.length;
+		str = other.str;
+
+		other.str = nullptr;
+		other.length = 0;
+	}
+
+	~MyString()
+	{
+		delete[] str;
+	}
+
+	char* GetStr()
+	{
+		return str;
+	}
+
+	MyString operator+(const MyString& other)
+	{
+		int NewLength = length + other.length + 2;
+		char* NewStr = new char[NewLength];
+		strcpy_s(NewStr, NewLength, str);
+		strcat_s(NewStr, NewLength, other.str);
+		delete[]str;
+		str = NewStr;
+		length = NewLength;
+		return *this;
+	}
+
+	MyString operator=(const MyString& other)
+	{
+		length = other.length;
+		str = new char[length + 1];
+		strcpy_s(str, length, other.str);
+		return *this;
+	}
+
+	MyString operator=(MyString&& other)
+	{
+		length = other.length;
+		str = other.str;
+
+		other.str = nullptr;
+		other.length = 0;
+
+		return *this;
+	}
+
+};
+
+class Array
+{
+	int size;
+	int* arr;
+
+	static void FixSize(int& size)
+	{
+		if (size < 0)
+			size = 0;
+	}
+
+	static int GetRandomValue(int startRange, int endRange)
+	{
+		return rand() % (endRange - startRange + 1) + startRange;
+	}
+
+public:
+	Array()
+	{
+		size = 0;
+		arr = nullptr;
+	}
+
+	explicit Array(int size) : Array(size, 0)
+	{
+	}
+
+	Array(int size, int value)
+	{
+		FixSize(size);
+
+		this->size = size;
+		arr = new int[size];
+		for (int i = 0; i < size; i++)
+			arr[i] = value;
+	}
+
+	Array(int* arr, int size)
+	{
+		FixSize(size);
+
+		this->size = size;
+		this->arr = new int[size];
+		for (int i = 0; i < size; i++)
+			this->arr[i] = arr[i];
+	}
+
+	Array(const Array& other)
+	{
+		size = other.size;
+		arr = new int[size];
+		for (int i = 0; i < size; i++)
+			arr[i] = other.arr[i];
+	}
+	
+	Array(Array&& other)
+	{
+		size = other.size;
+		arr = other.arr;
+
+		other.size = 0;
+		other.arr = nullptr;
+	}
+
+	~Array()
+	{
+		if (arr != nullptr)
+			delete[] arr;
+	}
+
+	int Size() const
+	{
+		return size;
+	}
+
+	int& At(const int index)
+	{
+		return arr[index];
+	}
+
+	int At(const int index) const
+	{
+		return arr[index];
+	}
+
+	bool IsEmpty() const
+	{
+		return size == 0;
+	}
+
+	void Clear()
+	{
+		size = 0;
+
+		if (arr != nullptr)
+			delete[] arr;
+
+		arr = nullptr;
+	}
+
+	void Resize(int size)
+	{
+		FixSize(size);
+
+		int* newArr = size == 0 ? nullptr : new int[size];
+		int minSize = min(this->size, size);
+		for (int i = 0; i < minSize; i++)
+			newArr[i] = arr[i];
+		for (int i = minSize; i < size; i++)
+			newArr[i] = 0;
+
+		if (arr != nullptr)
+			delete[] arr;
+
+		this->size = size;
+		arr = newArr;
+	}
+
+	void Randomize(int startRange, int endRange)
+	{
+		if (IsEmpty())
+			return;
+
+		for (int i = 0; i < size; i++)
+			arr[i] = GetRandomValue(startRange, endRange);
+	}
+
+	void Sort(bool desc = false)
+	{
+		if (IsEmpty())
+			return;
+
+		if (desc)
+			sort(arr, arr + size, [](int& a, int& b) { return a > b; });
+		else
+			sort(arr, arr + size, [](int& a, int& b) { return a < b; });
+	}
+
+	void Swap(int firstIndex, int secondIndex)
+	{
+		swap(arr[firstIndex], arr[secondIndex]);
+	}
+
+	void Concatenate(const Array& other)
+	{
+		if (other.IsEmpty())
+			return;
+
+		int newSize = size + other.size;
+		int* newArr = new int[newSize];
+		for (int i = 0; i < size; i++)
+			newArr[i] = arr[i];
+		for (int i = 0; i < other.size; i++)
+			newArr[size + i] = other.arr[i];
+
+		if (arr != nullptr)
+			delete[] arr;
+
+		this->size = newSize;
+		arr = newArr;
+	}
+
+	void Insert(int index, int value)
+	{
+		int newSize = size + 1;
+		int* newArr = new int[newSize];
+		for (int i = 0; i < index; i++)
+			newArr[i] = arr[i];
+		newArr[index] = value;
+		for (int i = index; i < size; i++)
+			newArr[i + 1] = arr[i];
+
+		if (arr != nullptr)
+			delete[] arr;
+
+		this->size = newSize;
+		arr = newArr;
+	}
+
+	void InsertFront(int value)
+	{
+		Insert(0, value);
+	}
+
+	void InsertBack(int value)
+	{
+		Insert(size, value);
+	}
+
+	void Remove(int index)
+	{
+		if (size <= 1)
+		{
+			Clear();
+			return;
+		}
+
+		int newSize = size - 1;
+		int* newArr = new int[newSize];
+		for (int i = 0; i < index; i++)
+			newArr[i] = arr[i];
+		for (int i = index; i < newSize; i++)
+			newArr[i] = arr[i + 1];
+
+		if (arr != nullptr)
+			delete[] arr;
+
+		this->size = newSize;
+		arr = newArr;
+	}
+
+	void RemoveFront()
+	{
+		Remove(0);
+	}
+
+	void RemoveBack()
+	{
+		Remove(size - 1);
+	}
+
+	void Replace(int oldValue, int newValue)
+	{
+		for (int i = 0; i < size; i++)
+			if (arr[i] == oldValue)
+				arr[i] = newValue;
+	}
+
+	double GetAverage() const
+	{
+		if (IsEmpty())
+			return 0;
+
+		int sum = 0;
+		for (int x : span(arr, arr + size))
+			sum += x;
+
+		return (double)sum / size;
+	}
+
+	int GetSum() const
+	{
+		int sum = 0;
+		for (int x : span(arr, arr + size))
+			sum += x;
+
+		return sum;
+	}
+
+	int GetMin() const
+	{
+		if (IsEmpty())
+			return 0;
+
+		int min = arr[0];
+		for (int x : span(arr, arr + size))
+			if (x < min)
+				min = x;
+
+		return min;
+	}
+
+	int GetMax() const
+	{
+		if (IsEmpty())
+			return 0;
+
+		int max = arr[0];
+		for (int x : span(arr, arr + size))
+			if (x > max)
+				max = x;
+
+		return max;
+	}
+
+	int Find(int value) const
+	{
+		for (int i = 0; i < size; i++)
+			if (arr[i] == value)
+				return i;
+
+		return -1;
+	}
+
+	int FindLast(int value) const
+	{
+		for (int i = size - 1; i >= 0; i--)
+			if (arr[i] == value)
+				return i;
+
+		return -1;
+	}
+
+	string ToString() const
+	{
+		return ToString(", ");
+	}
+
+	string ToString(string separator) const
+	{
+		if (IsEmpty())
+			return "";
+
+		string str = to_string(arr[0]);
+		for (int x : span(arr + 1, arr + size))
+			str += separator + to_string(x);
+
+		return str;
+	}
+};
+
+void F1(Array arr)
+{
+	cout << "arr = [" << arr.ToString() << "] with size = " << arr.Size() << endl;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "ru");
+
+	MyString str1;
+	MyString str2 = "Qwerty";
+	MyString str3 = "Hello, World!";
+	MyString str4 = str2;
+	MyString str5 = str2+str3;
+
+	cout << "str1 = " << str1.GetStr() << endl;
+	cout << "str2 = " << str2.GetStr() << endl;
+	cout << "str3 = " << str3.GetStr() << endl;
+	cout << "str4 = " << str4.GetStr() << endl;
+	cout << "str5 = " << str5.GetStr() << endl;
+
+
+	Array arr2(4);
+	Array arr3(5, 777);
+	Array arr4(arr3);
+	Array arr1 = arr2; 
+	
+
+	cout << "arr1 = [" << arr1.ToString() << "] with size = " << arr1.Size() << endl;
+	cout << "arr2 = [" << arr2.ToString() << "] with size = " << arr2.Size() << endl;
+	cout << "arr3 = [" << arr3.ToString() << "] with size = " << arr3.Size() << endl;
+	cout << "arr4 = [" << arr4.ToString() << "] with size = " << arr4.Size() << endl;
+
+
+
+	system("pause");
+}
 
 //Встреча №9
 //
