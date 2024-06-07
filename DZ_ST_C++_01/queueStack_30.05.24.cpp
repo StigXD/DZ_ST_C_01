@@ -715,427 +715,625 @@ using namespace std;
 //}
 
 
-class MyString
+// Полиморфизм
+// Виртуальные функции
+
+//class Pet
+//{
+//	string name;
+//
+//public:
+//	
+//	Pet()
+//	{
+//		this->name = "Empty";
+//	}
+//	
+//	Pet(const string& name)
+//	{
+//		this->name = name;
+//	}
+//
+//	virtual void SoundPet()
+//	{
+//		cout << "None" << endl;
+//	}
+//
+//	virtual void PrintNamePet()
+//	{
+//		cout << name << endl;
+//	}
+//	
+//	virtual void PrintPet()
+//	{
+//		cout << "Тип животного => Pet" << endl;
+//	}
+//
+//};
+//
+//class Dog : public Pet
+//{
+//	string name;
+//
+//public:
+//
+//	Dog()
+//	{
+//		this->name = "Empty";
+//	}
+//
+//	Dog(const string& name): Pet(name)
+//	{
+//	}
+//
+//	void SoundPet()override
+//	{
+//		cout << "Gav" << endl;
+//	}
+//
+//	void PrintPet()override
+//	{
+//		cout << "Тип животного => Dog" << endl;
+//	}
+//
+//};
+//
+//class Cat : public Pet
+//{
+//	string name;
+//
+//public:
+//
+//	Cat() 
+//	{
+//		this->name = "Empty";
+//	}
+//
+//	Cat(const string& name) : Pet(name)
+//	{
+//	}
+//
+//	void SoundPet()override
+//	{
+//		cout << "Mew" << endl;
+//	}
+//
+//	void PrintPet()override
+//	{
+//		cout << "Тип животного => Cat" << endl;
+//	}
+//
+//};
+//
+//class Parrot : public Pet
+//{
+//	string name;
+//
+//public:
+//
+//	Parrot()
+//	{
+//		this->name = "Empty";
+//	}
+//
+//	Parrot(const string& name) : Pet(name)
+//	{
+//	}
+//
+//
+//	void SoundPet()override
+//	{
+//		cout << "Popka durak" << endl;
+//	}
+//
+//	void PrintPet()override
+//	{
+//		cout << "Тип животного => Parrot" << endl;
+//	}
+//
+//};
+//
+//class Hamster : public Pet
+//{
+//	string name;
+//
+//public:
+//
+//	Hamster() 
+//	{
+//		this->name = "Empty";
+//	}
+//
+//	Hamster(const string& name) : Pet(name)
+//	{
+//	}
+//
+//
+//
+//	void SoundPet() override
+//	{
+//		cout << "Pipipi" << endl;
+//	}
+//
+//	void PrintPet()override
+//	{
+//		cout << "Тип животного => Hamster" << endl;
+//	}
+//
+//};
+//
+//void main()
+//{
+//	setlocale(LC_ALL, "ru");
+//
+//	vector<Pet*> pet;
+//	pet.push_back(new Dog("Cobaka"));
+//	pet.push_back(new Cat("Koshka"));
+//	pet.push_back(new Parrot("Popygay"));
+//	pet.push_back(new Hamster("Homyak"));
+//
+//	for (int i = 0; i < pet.size(); i++)
+//	{
+//		pet[i]->PrintPet();
+//		pet[i]->PrintNamePet();
+//		pet[i]->SoundPet();
+//	}
+//
+//	system("pause");
+//}
+
+// Задание №1
+//Создать базовый класс "список". Реализовать на базе списка стек и очередь с виртууальными функциями вставки и вытаскивания
+
+//class List
+//{
+//protected:
+//	struct ListNode
+//	{
+//		int Value;
+//	    ListNode* Next;
+//	
+//	    ListNode(const int& value, ListNode* next)
+//	    {
+//	        Value = value;
+//	        Next = next;
+//	    }
+//	};
+//	
+//	    ListNode* head;
+//	    ListNode* tail;
+//	
+//	public:
+//		List()
+//	    {
+//	        head = tail = nullptr;
+//	    }
+//	
+//	    ~List()
+//	    {
+//	        Clear();
+//	    }
+//	
+//	    bool IsEmpty() const
+//	    {
+//	        return head == nullptr;
+//	    }
+//	
+//	    void Clear()
+//	    {
+//	        while (head != nullptr)
+//	        {
+//	            const ListNode* forDelete = head;
+//	            head = head->Next;
+//	            delete forDelete;
+//	        }
+//	
+//	        tail = nullptr;
+//	    }
+//	
+//	    virtual void Push(const int& value)
+//	    {
+//	        if (IsEmpty())
+//	            head = tail = new ListNode(value, nullptr);
+//	        else
+//	            tail = tail->Next = new ListNode(value, nullptr);
+//	    }
+//	
+//	    virtual int Pop()
+//	    {
+//	        if (IsEmpty())
+//	            return 0;
+//	
+//	        const int result = head->Value;
+//	        const ListNode* forDelete = head;
+//	
+//	        head = head->Next;
+//	        if (head == nullptr)
+//	            tail = nullptr;
+//	
+//	        delete forDelete;
+//	        return result;
+//	    }
+//	
+//	    void ForEach(const function<void(int)> action) const
+//	    {
+//	        ListNode* current = head;
+//	        while (current != nullptr)
+//	        {
+//	            action(current->Value);
+//	            current = current->Next;
+//	        }
+//	    }
+//
+//};
+//
+//class Queue:public List
+//{
+//
+//	Queue()
+//	{
+//		head = tail = nullptr;
+//	}
+//
+//	~Queue()
+//	{
+//		Clear();
+//	}
+//
+//};
+//
+//class Stack
+//{
+//
+//};
+//
+//void main()
+//{
+//	Stack stack;
+//	stack.Push(1);
+//	stack.Push(2);
+//	stack.Push(3);
+//
+//	cout << stack.Pop() << endl;// 3
+//	cout << stack.Pop() << endl;// 2
+//	cout << stack.Pop() << endl;// 1
+//
+//	system("pause");
+//}
+
+
+//Задача №3 - Создать абстрактный класс Транспортное средство и производные классы автомобиль, велосипед, повозка.
+//посчитать время и стоимость перевозки людей и грузов
+
+//class Transport
+//{
+//public:
+//
+//	virtual double Time() = 0;
+//	virtual double Cost() = 0;
+//};
+//
+//class Car: public Transport
+//{
+//	double distance;
+//	int velocity = 100;
+//	int expense = 10;
+//	double weight;
+//
+//public:
+//
+//	Car():Car(0,0)
+//	{
+//
+//	}
+//
+//	Car(double distance, double weight)
+//	{
+//		this->distance = distance;
+//		this->weight = weight;
+//
+//	}
+//
+//	double Time() override
+//	{
+//		double time;
+//		return time = distance / velocity;
+//	}
+//
+//	double Cost() override
+//	{
+//		double cost;
+//		return cost = (distance * expense)/weight;
+//	}
+//};
+//
+//class Bike:public Transport
+//{
+//	double distance;
+//	int velocity = 15;
+//	int expense = 1;
+//	int tonnage = 10;
+//	double weight;
+//
+//public:
+//
+//	Bike() :Bike(0,0)
+//	{
+//
+//	}
+//
+//	Bike(double distance, double weight)
+//	{
+//		this->distance = distance;
+//		this->weight = weight;
+//	}
+//
+//	double Time() override
+//	{
+//		double time;
+//		return time = distance / velocity;
+//	}
+//
+//	double Cost() override
+//	{
+//		double cost;
+//		return cost = (distance * expense) / weight;
+//	}
+//
+//};
+//
+//class Carriage:public Transport
+//{
+//	double distance;
+//	int velocity = 20;
+//	int expense = 5;
+//	int tonnage = 5000;
+//	double weight;
+//
+//public:
+//
+//	Carriage() :Carriage(0,0)
+//	{
+//
+//	}
+//
+//	Carriage(double distance, double weight)
+//	{
+//		this->distance = distance;
+//		this->weight = weight;
+//	}
+//	
+//	double Time() override
+//	{
+//		double time;
+//		return time = distance / velocity;
+//	}
+//
+//	double Cost() override
+//	{
+//		double cost;
+//		return cost = (distance * expense) / weight;
+//	}
+//
+//};
+//
+//void main()
+//{
+//	setlocale(LC_ALL, "ru");
+//
+//	Car car1(1000, 100);
+//	Bike bike1(50, 10);
+//	Carriage carriage1(150, 2000);
+//
+//	cout << car1.Cost() << endl;
+//	cout << car1.Time() << endl << endl;
+//
+//	cout << bike1.Cost() << endl;
+//	cout << bike1.Time() << endl << endl;
+//
+//	cout << carriage1.Cost() << endl;
+//	cout << carriage1.Time() << endl << endl;
+//
+//
+//	system("pause");
+//}
+
+//Задача №4 - Создать абстрактный класс Employer с чисто виртуальной функцией Print. Создать три класса President, Manager, Worker.
+//переопределить функцию Print
+
+//class Employer
+//{
+//protected:
+//	string name;
+//
+//public:
+//
+//	Employer(string& name)
+//	{
+//		this->name = name;
+//	}
+//
+//	virtual void Print() = 0;
+//
+//};
+//
+//class President : public Employer
+//{
+//	
+//	string yearsInPost;
+//
+//public:
+//
+//	President(string& name, string& yearsInPost) :Employer(name)
+//	{
+//		this->yearsInPost = yearsInPost;
+//	}
+//
+//	void Print() override
+//	{
+//		cout << "Имя директора => " << name << endl;
+//		cout << "Лет в должности => " << yearsInPost << endl;
+//	}
+//
+//};
+//
+//class Manager : public Employer
+//{
+//	string post;
+//
+//public:
+//
+//	Manager(string& name, string& post) :Employer(name)
+//	{
+//		this->post = post;
+//	}
+//
+//	void Print() override
+//	{
+//		cout << "Имя менеджера => " << name << endl;
+//		cout << "Должности => " << post << endl;
+//	}
+//
+//
+//};
+//
+//class Worker : public Employer
+//{
+//	string specialization;
+//
+//public:
+//
+//
+//	Worker(string& name, string& specialization) :Employer(name)
+//	{
+//		this->specialization = specialization;
+//	}
+//
+//	void Print() override
+//	{
+//		cout << "Имя рабочего => " << name << endl;
+//		cout << "Профессия => " << specialization << endl;
+//	}
+//
+//
+//};
+//
+//void main()
+//{
+//	setlocale(LC_ALL, "ru");
+//
+//	vector<Employer*> employer;
+//	employer.push_back(new President("President", "10"));
+//
+//	system("pause");
+//}
+
+//Задача №5 - Создать абстрактный базовый класс с виртуальной функцией - площадь. Создать произвольные классы прямоугольник круг, прмоуголный треугольник, трапеция со своими функциями площади.
+// Для проверки определить массив ссылок на абстрактный объектный класс, которым присваиваются адреса различных объектов.
+
+class Square
 {
-	int length;
-	char* str;
-
 public:
-	MyString() : MyString("")
+
+	virtual double CalculatingSquare() = 0;
+
+};
+
+class Rectangle: public Square
+{
+	int a;
+	int b;
+public:
+
+	Rectangle(int a, int b)
 	{
+		this->a = a;
+		this->b = b;
 	}
 
-	MyString(const char* str)
+	double CalculatingSquare() override
 	{
-		length = strlen(str);
-		this->str = new char[length + 1];
-		strcpy_s(this->str, length + 1, str);
-	}
-
-	MyString(const MyString& other)
-	{
-		length = other.length;
-		str = new char[length + 1];
-		strcpy_s(str, length + 1, other.str);
-	}
-
-	MyString(MyString&& other)
-	{
-		length = other.length;
-		str = other.str;
-
-		other.str = nullptr;
-		other.length = 0;
-	}
-
-	~MyString()
-	{
-		delete[] str;
-	}
-
-	char* GetStr()
-	{
-		return str;
-	}
-
-	MyString operator+(const MyString& other)
-	{
-		int NewLength = length + other.length + 2;
-		char* NewStr = new char[NewLength];
-		strcpy_s(NewStr, NewLength, str);
-		strcat_s(NewStr, NewLength, other.str);
-		delete[]str;
-		str = NewStr;
-		length = NewLength;
-		return *this;
-	}
-
-	MyString operator=(const MyString& other)
-	{
-		length = other.length;
-		str = new char[length + 1];
-		strcpy_s(str, length, other.str);
-		return *this;
-	}
-
-	MyString operator=(MyString&& other)
-	{
-		length = other.length;
-		str = other.str;
-
-		other.str = nullptr;
-		other.length = 0;
-
-		return *this;
+		double square = (double)a*b;
+		return square;
 	}
 
 };
 
-class Array
+class Circle : public Square
 {
-	int size;
-	int* arr;
-
-	static void FixSize(int& size)
-	{
-		if (size < 0)
-			size = 0;
-	}
-
-	static int GetRandomValue(int startRange, int endRange)
-	{
-		return rand() % (endRange - startRange + 1) + startRange;
-	}
-
+	int radius;
+	double pi = 3.14;
 public:
-	Array()
+
+	Circle(int radius)
 	{
-		size = 0;
-		arr = nullptr;
+		this->radius = radius;
 	}
 
-	explicit Array(int size) : Array(size, 0)
+	double CalculatingSquare() override
 	{
+		double square = pow(pi*radius,2);
+		return square;
 	}
 
-	Array(int size, int value)
-	{
-		FixSize(size);
-
-		this->size = size;
-		arr = new int[size];
-		for (int i = 0; i < size; i++)
-			arr[i] = value;
-	}
-
-	Array(int* arr, int size)
-	{
-		FixSize(size);
-
-		this->size = size;
-		this->arr = new int[size];
-		for (int i = 0; i < size; i++)
-			this->arr[i] = arr[i];
-	}
-
-	Array(const Array& other)
-	{
-		size = other.size;
-		arr = new int[size];
-		for (int i = 0; i < size; i++)
-			arr[i] = other.arr[i];
-	}
-
-	Array(Array&& other)
-	{
-		size = other.size;
-		arr = other.arr;
-
-		other.size = 0;
-		other.arr = nullptr;
-	}
-
-	~Array()
-	{
-		if (arr != nullptr)
-			delete[] arr;
-	}
-
-	int Size() const
-	{
-		return size;
-	}
-
-	int& At(const int index)
-	{
-		return arr[index];
-	}
-
-	int At(const int index) const
-	{
-		return arr[index];
-	}
-
-	bool IsEmpty() const
-	{
-		return size == 0;
-	}
-
-	void Clear()
-	{
-		size = 0;
-
-		if (arr != nullptr)
-			delete[] arr;
-
-		arr = nullptr;
-	}
-
-	void Resize(int size)
-	{
-		FixSize(size);
-
-		int* newArr = size == 0 ? nullptr : new int[size];
-		int minSize = min(this->size, size);
-		for (int i = 0; i < minSize; i++)
-			newArr[i] = arr[i];
-		for (int i = minSize; i < size; i++)
-			newArr[i] = 0;
-
-		if (arr != nullptr)
-			delete[] arr;
-
-		this->size = size;
-		arr = newArr;
-	}
-
-	void Randomize(int startRange, int endRange)
-	{
-		if (IsEmpty())
-			return;
-
-		for (int i = 0; i < size; i++)
-			arr[i] = GetRandomValue(startRange, endRange);
-	}
-
-	void Sort(bool desc = false)
-	{
-		if (IsEmpty())
-			return;
-
-		if (desc)
-			sort(arr, arr + size, [](int& a, int& b) { return a > b; });
-		else
-			sort(arr, arr + size, [](int& a, int& b) { return a < b; });
-	}
-
-	void Swap(int firstIndex, int secondIndex)
-	{
-		swap(arr[firstIndex], arr[secondIndex]);
-	}
-
-	void Concatenate(const Array& other)
-	{
-		if (other.IsEmpty())
-			return;
-
-		int newSize = size + other.size;
-		int* newArr = new int[newSize];
-		for (int i = 0; i < size; i++)
-			newArr[i] = arr[i];
-		for (int i = 0; i < other.size; i++)
-			newArr[size + i] = other.arr[i];
-
-		if (arr != nullptr)
-			delete[] arr;
-
-		this->size = newSize;
-		arr = newArr;
-	}
-
-	void Insert(int index, int value)
-	{
-		int newSize = size + 1;
-		int* newArr = new int[newSize];
-		for (int i = 0; i < index; i++)
-			newArr[i] = arr[i];
-		newArr[index] = value;
-		for (int i = index; i < size; i++)
-			newArr[i + 1] = arr[i];
-
-		if (arr != nullptr)
-			delete[] arr;
-
-		this->size = newSize;
-		arr = newArr;
-	}
-
-	void InsertFront(int value)
-	{
-		Insert(0, value);
-	}
-
-	void InsertBack(int value)
-	{
-		Insert(size, value);
-	}
-
-	void Remove(int index)
-	{
-		if (size <= 1)
-		{
-			Clear();
-			return;
-		}
-
-		int newSize = size - 1;
-		int* newArr = new int[newSize];
-		for (int i = 0; i < index; i++)
-			newArr[i] = arr[i];
-		for (int i = index; i < newSize; i++)
-			newArr[i] = arr[i + 1];
-
-		if (arr != nullptr)
-			delete[] arr;
-
-		this->size = newSize;
-		arr = newArr;
-	}
-
-	void RemoveFront()
-	{
-		Remove(0);
-	}
-
-	void RemoveBack()
-	{
-		Remove(size - 1);
-	}
-
-	void Replace(int oldValue, int newValue)
-	{
-		for (int i = 0; i < size; i++)
-			if (arr[i] == oldValue)
-				arr[i] = newValue;
-	}
-
-	double GetAverage() const
-	{
-		if (IsEmpty())
-			return 0;
-
-		int sum = 0;
-		for (int x : span(arr, arr + size))
-			sum += x;
-
-		return (double)sum / size;
-	}
-
-	int GetSum() const
-	{
-		int sum = 0;
-		for (int x : span(arr, arr + size))
-			sum += x;
-
-		return sum;
-	}
-
-	int GetMin() const
-	{
-		if (IsEmpty())
-			return 0;
-
-		int min = arr[0];
-		for (int x : span(arr, arr + size))
-			if (x < min)
-				min = x;
-
-		return min;
-	}
-
-	int GetMax() const
-	{
-		if (IsEmpty())
-			return 0;
-
-		int max = arr[0];
-		for (int x : span(arr, arr + size))
-			if (x > max)
-				max = x;
-
-		return max;
-	}
-
-	int Find(int value) const
-	{
-		for (int i = 0; i < size; i++)
-			if (arr[i] == value)
-				return i;
-
-		return -1;
-	}
-
-	int FindLast(int value) const
-	{
-		for (int i = size - 1; i >= 0; i--)
-			if (arr[i] == value)
-				return i;
-
-		return -1;
-	}
-
-	string ToString() const
-	{
-		return ToString(", ");
-	}
-
-	string ToString(string separator) const
-	{
-		if (IsEmpty())
-			return "";
-
-		string str = to_string(arr[0]);
-		for (int x : span(arr + 1, arr + size))
-			str += separator + to_string(x);
-
-		return str;
-	}
 };
 
-void F1(Array arr)
+class Triangle : public Square
 {
-	cout << "arr = [" << arr.ToString() << "] with size = " << arr.Size() << endl;
-}
+	int a;
+	int b;
+public:
+
+	Triangle(int a, int b)
+	{
+		this->a = a;
+		this->b = b;
+	}
+
+	double CalculatingSquare() override
+	{
+		double square = (double)a * b / 2;
+		return square;
+	}
+
+};
+
+class Trapezoid : public Square
+{
+	int a;
+	int b;
+	int h;
+public:
+
+	Trapezoid(int a, int b, int h)
+	{
+		this->a = a;
+		this->b = b;
+		this->h = h;
+	}
+
+	double CalculatingSquare() override
+	{
+		double square = ((double)a + b) / 2*h;
+		return square;
+	}
+
+};
 
 void main()
 {
 	setlocale(LC_ALL, "ru");
 
-	MyString str1;
-	MyString str2 = "Qwerty";
-	MyString str3 = "Hello, World!";
-	MyString str4 = str2;
-	MyString str5 = str2 + str3;
+	vector<Square*> square;
+	square.push_back(new Rectangle(2,3));
+	square.push_back(new Circle(3));
+	square.push_back(new Triangle(2, 3));
+	square.push_back(new Trapezoid(2, 3, 2));
 
-	cout << "str1 = " << str1.GetStr() << endl;
-	cout << "str2 = " << str2.GetStr() << endl;
-	cout << "str3 = " << str3.GetStr() << endl;
-	cout << "str4 = " << str4.GetStr() << endl;
-	cout << "str5 = " << str5.GetStr() << endl;
-
-
-	Array arr2(4);
-	Array arr3(5, 777);
-	Array arr4(arr3);
-	Array arr1 = arr2;
-
-
-	cout << "arr1 = [" << arr1.ToString() << "] with size = " << arr1.Size() << endl;
-	cout << "arr2 = [" << arr2.ToString() << "] with size = " << arr2.Size() << endl;
-	cout << "arr3 = [" << arr3.ToString() << "] with size = " << arr3.Size() << endl;
-	cout << "arr4 = [" << arr4.ToString() << "] with size = " << arr4.Size() << endl;
-
+	for (int i = 0; i < square.size(); i++)
+		cout << square[i]->CalculatingSquare() << endl;
 
 
 	system("pause");
+
 }
